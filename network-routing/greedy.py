@@ -3,27 +3,27 @@ from graph_data import graph, heuristic
 from utils import reconstruct
 
 def greedy_best_first(start, goal):
-    pq = [(heuristic[start], start)]
-    visited = set()
-    parent = {start: None}
+    pq = [(heuristic[start], start)]  # priority queue storing (heuristic, node)
+    visited = set()  # keeps track of visited nodes
+    parent = {start: None}  # stores path
 
     while pq:
-        h, node = heapq.heappop(pq)
+        h, node = heapq.heappop(pq)  # get node with lowest heuristic
 
         if node == goal:
-            return reconstruct(parent, goal)
+            return reconstruct(parent, goal)  # return path
 
         if node in visited:
-            continue
+            continue  # skip if already visited
 
         visited.add(node)
 
         for neighbor, _ in graph[node]:
             if neighbor not in visited:
-                parent[neighbor] = node
-                heapq.heappush(pq, (heuristic[neighbor], neighbor))
+                parent[neighbor] = node  # update path
+                heapq.heappush(pq, (heuristic[neighbor], neighbor))  # push based on heuristic
 
-    return None
+    return None  # if no path found
 
 
 if __name__ == "__main__":
